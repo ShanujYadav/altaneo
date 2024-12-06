@@ -12,9 +12,15 @@ app.get('/', (req, res) => {
 });
 
 
-app.get('/sanu', (req, res) => {
+app.get('/api/sanu', (req, res) => {
     res.send(`${process.env.NAME}`)
 })
+
+
+app.get('/api/manu', (req, res) => {
+    res.send('ho gya bhai !')
+})
+
 
 
 app.listen(process.env.PORT || 5000, () => {
