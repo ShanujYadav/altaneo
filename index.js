@@ -3,11 +3,12 @@ import { createHash, createHmac } from "crypto-browserify"
 import express from 'express'
 import cors from 'cors'
 const app = express();
+dotenv.config()
+
 
 const hmacKey=process.env.HMACKEY
 const pid=process.env.PID
 
-dotenv.config()
 
 app.use(cors())
 
