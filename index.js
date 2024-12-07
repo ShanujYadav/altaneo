@@ -4,10 +4,10 @@ import express from 'express'
 import cors from 'cors'
 const app = express();
 
+const hmacKey=process.env.HMACKEY
+const pid=process.env.PID
 
-dotenv.config({
-  path: '../env'
-})
+dotenv.config()
 
 app.use(cors())
 
@@ -39,10 +39,8 @@ const dummyData = [
 ];
 
 
-let pid = 'ALTA'
 let ymd = '20241207'
 
-let hmacKey='b4cfa19dcceab2ac416966d02b0c2ab2d096560255bbf0bbf51125122576763d'
 const getHmac = (pid, ymd) => {
   console.log('pid---', pid);
   console.log('ymd---', ymd);
