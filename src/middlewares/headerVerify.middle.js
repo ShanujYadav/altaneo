@@ -5,10 +5,11 @@ import { hmacVal } from "../utils/encryption.js";
 const rateLimitCache = new Map(); // Simple in-memory cache for rate limiting
 
 export const headerVerify = asyncHandler(async (req, res, next) => {
-    console.log('header hmacVal--',hmacVal);
+    
+    console.log('header hmacVal--',hmacVal());
     
     try {
-        const getHmac = req.header('reqHmac');
+        const reqHmac = req.header('reqHmac');
         const userAgent = req.header('userAgent');
         const ip = req.ip;
         const currentTime = Date.now();
@@ -30,11 +31,11 @@ export const headerVerify = asyncHandler(async (req, res, next) => {
             }
         }
 
-        if (!getHmac || !userAgent) {
+        if (!reqHmac || !userAgent) {
             return res.status(401).json(new ApiResponse(401, 'Empty Headers'));
         }
 
-        if (getHmac !== hmacVal) {
+        if (reqHmac !== hmacVal()) {
             return res.status(401).json(new ApiResponse(401, 'Invalid reqHmac'));
         }
 

@@ -7,7 +7,11 @@ import { hmacVal } from './src/utils/encryption.js';
 
 
 app.get('/api/hello', (req, res) => {
-    res.status(200).send('Ha bhai',hmacVal);
+   res.status(200).send(hmacVal());
+})
+
+app.get('/api/sanu', (req, res) => {
+   res.status(200).send('ha bhai');
 })
 
 

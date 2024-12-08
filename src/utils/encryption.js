@@ -25,16 +25,13 @@ export const SHA256 = (input) => {
 }
 
 
-const getHmac = (pid, ymd) => {
+export const hmacVal = () => {
+    const pid=process.env.PID
     console.log('pid---',pid);
     console.log('ymd---',ymd);
     const value = pid.toString().concat(ymd)
     var hmac = createHmac("sha256", process.env.HMACKEY).update(value).digest("hex")
     console.log('hmac--',hmac.toString("base64"))
+    
     return hmac.toString("base64")
 }
-
-
-const hmacVal = getHmac(process.env.PID, ymd)
-
-export { hmacVal }
