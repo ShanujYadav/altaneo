@@ -1,33 +1,25 @@
 import dotenv from 'dotenv'
-import express from 'express'
-import cors from 'cors'
-import connectDB from './src/db/connectDB.js';
-import { hmacVal } from './src/utils/encryption.js';
-const app = express();
 dotenv.config()
 
-
-app.use(cors())
-
-
-
-app.get('/api/sanu', (req, res) => {
-  res.send(`${process.env.PID}`)
-})
+import { app } from './app.js'
+import connectDB from './src/db/connectDB.js'
 
 
-console.log('hmacVal---',hmacVal);
+app.get('/api/hello', (req, res) => {
+    res.status(200).send('Ha bhai');
+});
 
+
+console.log('pid---',process.env.PID);
 
 
 
 connectDB()
-  .then(() => {
-    app.listen(process.env.PORT || 8000, () => {
-      console.log(`Server is running at http://localhost:${process.env.PORT}`);
-    });
-  })
-  .catch((err) => {
-    console.error('Database connection failed:', err.message);
-    process.exit(1); 
-  });
+.then(()=>{
+    app.listen(process.env.PORT|| 5000,()=>{
+        console.log(`Server is running at ${process.env.PORT}`);
+   })
+})
+.catch((err)=>{
+    console.log('Error=---',err)
+})
