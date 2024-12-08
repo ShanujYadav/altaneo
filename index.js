@@ -8,7 +8,7 @@ import { hmacVal } from './src/utils/encryption.js';
 
 app.get('/api/hello', (req, res) => {
     res.status(200).send('Ha bhai',hmacVal);
-});
+})
 
 
 console.log("index pid--",process.env.PID)
