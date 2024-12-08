@@ -1,7 +1,6 @@
 import { app } from './app.js'
 import dotenv from 'dotenv'
 import connectDB from './src/db/connectDB.js'
-
 dotenv.config()
 
 app.get('/api/hello', (req, res) => {
@@ -9,18 +8,11 @@ app.get('/api/hello', (req, res) => {
 });
 
 
-connectDB()
-.then(()=>{
+// connectDB()
     app.listen(process.env.PORT|| 5000,()=>{
         console.log(`Server is running at ${process.env.PORT}`);
-   })
-})
-
-.catch((err)=>{
-    console.log('Error=---',err)
-})
-
-
+    })
+    
 
 // import dotenv from 'dotenv'
 // import { createHash, createHmac } from "crypto-browserify"

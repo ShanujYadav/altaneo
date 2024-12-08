@@ -1,7 +1,6 @@
 import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
-
 const app = express()
 
 app.use(cors({
@@ -24,8 +23,8 @@ import adminRouter from './src/routes/admin.routes.js'
 import { headerVerify } from './src/middlewares/headerVerify.middle.js'
 import { accessTokenVerify } from './src/middlewares/accessTokenVerify.middle.js'
 
-import { hmacVal } from './src/utils/encryption.js'
-console.log(hmacVal)
+// import { hmacVal } from './src/utils/encryption.js'
+// console.log(hmacVal)
 
 
 //------------Routes Declaration ---------------

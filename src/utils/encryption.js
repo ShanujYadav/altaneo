@@ -3,7 +3,6 @@ import { ymd } from "./metaData.js"
 import jwt from 'jsonwebtoken';
 
 
-const pid = process.env.PID
 const hmacKey = process.env.HMACKEY
 const secretKey = process.env.SECRETKEY
 
@@ -38,6 +37,6 @@ const getHmac = (pid, ymd) => {
 }
 
 
-const hmacVal = getHmac(pid, ymd)
+const hmacVal = getHmac(process.env.PID, ymd)
 
 export { hmacVal }
