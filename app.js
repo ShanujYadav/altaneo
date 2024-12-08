@@ -14,7 +14,6 @@ app.use(express.urlencoded({ extended: true, limit: "50kb" }))
 app.use(express.static("public"))
 app.use(cookieParser())
 
-console.log('app----');
 
 
 // ---------Routes Import---------

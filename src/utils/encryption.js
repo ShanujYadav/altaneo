@@ -3,9 +3,11 @@ import { ymd } from "./metaData.js"
 import jwt from 'jsonwebtoken';
 
 
-const pid = process.env.PID
-const hmacKey = process.env.HMACKEY
-const secretKey = process.env.SECRETKEY
+
+console.log('secretKey---',process.env.SECRETKEY);
+console.log('hamcKey---',process.env.HMACKEY);
+console.log('encr pid---',process.env.PID);
+
 
 
 export const genrateMobHash = (payload) => {
@@ -34,11 +36,12 @@ const getHmac = (pid, ymd) => {
     console.log('pid---',pid);
     console.log('ymd---',ymd);
     const value = pid.toString().concat(ymd)
-    var hmac = createHmac("sha256", hmacKey).update(value).digest("hex")
+    var hmac = createHmac("sha256", process.env.HMACKEY).update(value).digest("hex")
+    console.log('hmac--',hmac.toString("base64"))
     return hmac.toString("base64")
 }
 
 
-const hmacVal = getHmac(pid, ymd)
+const hmacVal = getHmac(process.env.PID, ymd)
 
 export { hmacVal }

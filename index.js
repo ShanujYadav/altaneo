@@ -3,16 +3,15 @@ dotenv.config()
 
 import { app } from './app.js'
 import connectDB from './src/db/connectDB.js'
+import { hmacVal } from './src/utils/encryption.js';
 
 
 app.get('/api/hello', (req, res) => {
-    res.status(200).send('Ha bhai');
+    res.status(200).send('Ha bhai',hmacVal);
 });
 
 
-console.log('pid---',process.env.PID);
-
-
+console.log("index pid--",process.env.PID)
 
 connectDB()
 .then(()=>{
