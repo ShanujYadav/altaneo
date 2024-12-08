@@ -1,15 +1,14 @@
 import dotenv from 'dotenv'
-import { createHash, createHmac } from "crypto-browserify"
 import express from 'express'
 import cors from 'cors'
 import connectDB from './src/db/connectDB.js';
+import { hmacVal } from './src/utils/encryption.js';
 const app = express();
 dotenv.config()
 
-const hmacKey=process.env.HMACKEY
-const pid=process.env.PID
 
 app.use(cors())
+
 
 
 app.get('/api/sanu', (req, res) => {
@@ -17,17 +16,7 @@ app.get('/api/sanu', (req, res) => {
 })
 
 
-
-let ymd = '20241207'
-const getHmac = (pid, ymd) => {
-  console.log('pid---', pid);
-  console.log('ymd---', ymd);
-  const value = pid.toString().concat(ymd)
-  var hmac = createHmac("sha256", hmacKey).update(value).digest("hex")
-  return hmac.toString("base64")
-}
-console.log('hmac---', getHmac(pid,ymd))
-
+console.log('hmacVal---',hmacVal);
 
 
 
