@@ -26,3 +26,4 @@ jobs:
     - run: |
         touch .env
         echo "${{ secrets.DEMO.ENV.FILE}}" > .env
+    - run: pm2 restart index
