@@ -1,9 +1,10 @@
-import axios from "axios";
 import { User } from "../models/user.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { Lead } from "../models/lead.model.js";
 import { genrateMobHash, verifyMobHash } from "../utils/encryption.js";
+import { validatePhone } from "../utils/common.js";
+import { sendPhoneOtp } from "../utils/externalApi.js";
 
 
 
@@ -23,9 +24,6 @@ const genrateAccessAndRefreshToken = async (userId) => {
 
 
 
-
-
-
 const sendOtp = asyncHandler(async (req, res) => {
     const { appName, pid, ts, location, reqAction } = req.body.meta
     const { phone } = req.body.pay
@@ -35,7 +33,9 @@ const sendOtp = asyncHandler(async (req, res) => {
             return res.status(400).json(
                 new ApiResponse(400, "Payload Meta Malformed !"))
         }
-        if (!phone || phone.length !== 10) {
+        const isValid = validatePhone(phone)
+
+        if (!phone || !isValid) {
             return res.status(400).json(new ApiResponse(400, 'Invalied Phone Number !'))
         }
 
@@ -50,11 +50,12 @@ const sendOtp = asyncHandler(async (req, res) => {
                 httpOnly: true,
                 secure: true
             }
+
             return res.status(200)
                 .cookie("accessToken", accessToken, options)
                 .cookie("refreshToken", refreshToken, options)
                 .json(new ApiResponse(
-                    '000', "User Logged In !", {
+                    200, "User Logged In !", {
                     user: loggedInUser,
                     accessToken,
                     refreshToken
@@ -69,23 +70,11 @@ const sendOtp = asyncHandler(async (req, res) => {
             location
         })
 
-
-        // ------------------------- logic for send otp ---------------------------
         const otp = Math.floor(1000 + Math.random() * 9000)
 
-        const body = JSON.stringify({
-            apikey: process.env.MTALKZ_APIKEY,
-            senderid: process.env.MTALKZ_SENDERID,
-            number: phone,
-            message: `Your OTP- One Time Password is ${otp} to authenticate your login with ${otp} Powered By mTalkz`,
-            format: "json"
-        })
+        // ------------------------- send otp ---------------------------
 
-        // const otpResponse = await axios.post(process.env.MTALKZ_BASEURL, body, {
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     }
-        // })
+        // const otpResponse = await sendPhoneOtp(phone, otp)    
         // if (otpResponse.data.status !== 'OK') {
         //     return res.status(400).json(new ApiResponse(400, otpResponse.data.message))
         // }
@@ -95,6 +84,9 @@ const sendOtp = asyncHandler(async (req, res) => {
 
         const visible = phone.slice(-4)
         const maskedPhone = `*******${visible}`
+
+        
+        console.log({ mobHash, otp, phone });
 
         return res.status(200).json(new ApiResponse('000', `Otp sent Successfully on ${maskedPhone}!`, { mobHash, otp, phone }))
     } catch (error) {
@@ -116,6 +108,7 @@ const sendOtp = asyncHandler(async (req, res) => {
 const verifyOtp = asyncHandler(async (req, res) => {
     const { appName, pid, ts, location, clientIp, reqAction } = req.body.meta
     const { phone, otp, mobHash } = req.body.pay
+
     try {
         if (pid !== "ALTA" || appName !== 'Altaneo' || reqAction !== 'verifyOtp' || !ts) {
             return res.status(400).json(
@@ -127,7 +120,9 @@ const verifyOtp = asyncHandler(async (req, res) => {
             return res.status(400).json(new ApiResponse(400, "Payload Body Malformed !"))
         }
 
-        if (!(phone.length == 10 && otp.length == 4)) {
+        const isValid = validatePhone(phone)
+
+        if (!(isValid && otp.length == 4)) {
             return res.status(401).json(new ApiResponse(401, 'Invalied Credentials !'))
         }
 
@@ -140,10 +135,10 @@ const verifyOtp = asyncHandler(async (req, res) => {
         const decodedPhone = payload.slice(0, 10);
         const decodedOtp = payload.slice(-4)
 
+
         if (!(otp == decodedOtp && phone == decodedPhone)) {
             return res.status(401).json(new ApiResponse(401, 'Invalied OTP or Phone Number !'))
         }
-
 
         //-------------------------After Verify Phone and Otp Create Entry in User table--------------------
         const newUser = new User({
@@ -152,7 +147,7 @@ const verifyOtp = asyncHandler(async (req, res) => {
         const savedUser = await newUser.save()
 
         const { accessToken, refreshToken } = await genrateAccessAndRefreshToken(savedUser._id)
-        const loggedInUser = await User.findById(savedUser._id).select("-refreshToken")
+        const loggedInUser = await User.findById(savedUser._id).select("-refreshToken -createdAt -updatedAt -__v")
 
         const options = {
             httpOnly: true,
@@ -168,7 +163,6 @@ const verifyOtp = asyncHandler(async (req, res) => {
                 accessToken,
                 refreshToken
             },))
-
 
     } catch (error) {
         return res.status(500).json(new ApiResponse(500, error?.message))

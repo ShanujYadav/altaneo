@@ -5,9 +5,7 @@ import { hmacVal } from "../utils/encryption.js";
 import { User } from "../models/user.model.js";
 
 export const accessTokenVerify = asyncHandler(async (req, res, next) => {
-    console.log('accesstoken hmacVal--',hmacVal());
-    
-    try {
+    try { 
         const reqHmac = req.header('reqHmac')
         const token = req.header('accessToken')
         const userAgent = req.header('userAgent')
@@ -38,7 +36,7 @@ export const accessTokenVerify = asyncHandler(async (req, res, next) => {
         if (!user) {
             return res.status(401).json(new ApiResponse(401, "Invalid Access Token"))
         }
-        
+
         req.user = user
         next()
     } catch (error) {

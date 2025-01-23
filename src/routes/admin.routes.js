@@ -1,9 +1,11 @@
 import { Router } from "express"
-import { allUsers } from "../controllers/admin.controller.js";
+import {  allVendor, takenAction, vendorDetails } from "../controllers/admin.controller.js";
 
 const router = Router()
 
-router.route('/allUsers').post(allUsers)
+router.route('/allVendor').post(allVendor)
+router.route('/vendorDetails').post(vendorDetails)
+router.route('/takenAction').post(takenAction)
 
 
 export default router

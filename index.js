@@ -15,14 +15,15 @@ app.get('/api/sanu', (req, res) => {
 })
 
 
-console.log("index pid--",process.env.PID)
+console.log('hmacVal---', hmacVal())
+
 
 connectDB()
-.then(()=>{
-    app.listen(process.env.PORT|| 5000,()=>{
-        console.log(`Server is running at ${process.env.PORT}`);
+   .then(() => {
+      app.listen(process.env.PORT || 5000, () => {
+         console.log(`Server is running at ${process.env.PORT}`);
+      })
    })
-})
-.catch((err)=>{
-    console.log('Error=---',err)
-})
+   .catch((err) => {
+      console.log('Error=---', err)
+   })

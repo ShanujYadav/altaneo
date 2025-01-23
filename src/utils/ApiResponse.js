@@ -3,4 +3,4 @@ function ApiResponse(statusCode, message, data = null) {
   this.message = message;
   this.data = data;
 }
-export { ApiResponse };
+export { ApiResponse }
