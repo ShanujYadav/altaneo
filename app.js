@@ -29,7 +29,12 @@ import adminRouter from './src/routes/admin.routes.js'
 import { headerVerify } from './src/middlewares/headerVerify.middle.js'
 import { accessTokenVerify } from './src/middlewares/accessTokenVerify.middle.js'
 
-
+app.options('*', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', '*');  
+    res.status(200).end();
+});
 
 //---------------Routes Declaration ---------------
 
