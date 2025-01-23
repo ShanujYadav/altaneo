@@ -46,5 +46,4 @@ app.use('/api/altaneo/v1/admin', headerVerify, adminRouter)
 app.use('/api/altaneo/v1/user', accessTokenVerify, userRouter)
 
 
-
 export { app }
