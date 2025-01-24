@@ -8,14 +8,13 @@ const allLeads = asyncHandler(async (req, res) => {
     const { phone, password } = req.body.pay
 
     try {
-        if (pid !== "ALTA" || appName !== 'Altaneo' || reqAction !== 'allLeads' || !ts) {
+        if (pid !== "ALTA" || appName !== 'bdeDash' || reqAction !== 'allLeads' || !ts) {
             return res.status(400).json(
                 new ApiResponse(400, "Payload Meta Malformed !"))
         }
         if (!phone || !password) {
             return res.status(400).json(new ApiResponse(400, 'Payload Body Malformed !'))
         }
-
         if (!(phone == '9528492010' && password == '9528492010')) {
             return res.status(400).json(new ApiResponse(400, 'Invalied User '))
         }
@@ -37,53 +36,26 @@ const contactUs = asyncHandler(async (req, res) => {
     const { phone, message, name } = req.body.pay
 
     try {
-        if (!(pid == "ALTA" && appName == 'Altaneo' && reqAction == 'contactUs' && ts && location)) {
+        if (!(pid == "ALTA" && (appName === 'altaneoFin' || appName === 'altaneo') && reqAction == 'contactUs' && ts && location)) {
             return res.status(400).json(
                 new ApiResponse(400, "Payload Meta Malformed !"))
         }
         if (!phone || !message || !name) {
-            return res.status(400).json(new ApiResponse(400, 'Please Fill All Fields !'))
+            return res.status(400).json(new ApiResponse(400, 'Payload Body Malformed !'))
         }
         const lead = await Lead.create({
             phone,
             ts,
+            appName,
             reqAction,
             location,
             message,
             name
         })
-        return res.status(200).json(new ApiResponse('000', 'Thank You Our team will Contact You Soon', lead))
+        return res.status(200).json(new ApiResponse('000', 'Thank You, Our team will Contact You Soon', lead))
     } catch (error) {
         return res.status(500).json(new ApiResponse(500, error?.message))
     }
 })
 
-
-const getInTouch = asyncHandler(async (req, res) => {
-    const { appName, pid, ts, location, reqAction } = req.body.meta
-    const { phone, name } = req.body.pay
-
-    try {
-        if (!(pid == "ALTA" && appName == 'Altaneo' && reqAction == 'getInTouch' && ts && location)) {
-            return res.status(400).json(
-                new ApiResponse(400, "Payload Meta Malformed !"))
-        }
-        if (!phone || !name) {
-            return res.status(400).json(new ApiResponse(400, 'Empty Phone No !'))
-        }
-
-        const lead = await Lead.create({
-            phone,
-            name,
-            ts,
-            reqAction,
-            location,
-        })
-
-        return res.status(200).json(new ApiResponse('000', 'Thank You Our team will Contact You Soon', lead))
-    } catch (error) {
-        return res.status(500).json(new ApiResponse(500, error?.message))
-    }
-})
-
-export { allLeads, contactUs, getInTouch }
+export { allLeads, contactUs }

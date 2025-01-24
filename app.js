@@ -4,7 +4,6 @@ import cookieParser from 'cookie-parser'
 
 const app = express()
 
-
     app.use(cors({
         origin: process.env.CORS_ORIGIN,
         credentials: true,
@@ -36,13 +35,12 @@ app.options('*', (req, res) => {
     res.status(200).end();
 });
 
-//---------------Routes Declaration ---------------
+//-------------------Routes Declaration ---------------------
 
 
 app.use('/api/altaneo/v1/login', headerVerify, loginRouter)
 app.use('/api/altaneo/v1/leads', headerVerify, leadsRouter)
 app.use('/api/altaneo/v1/admin', headerVerify, adminRouter)
-
 app.use('/api/altaneo/v1/user', accessTokenVerify, userRouter)
 
 

@@ -11,6 +11,11 @@ const leadSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    appName:{
+        type:String,
+        required: true,
+        trim: true
+    },
     reqAction: {
         type: String,
         required: true,

@@ -29,7 +29,7 @@ const sendOtp = asyncHandler(async (req, res) => {
     const { phone } = req.body.pay
 
     try {
-        if (pid !== "ALTA" || appName !== 'Altaneo' || reqAction !== 'sendOtp' || !ts) {
+        if (pid !== "ALTA" || appName !== 'altaneoFin' || reqAction !== 'sendOtp' || !ts) {
             return res.status(400).json(
                 new ApiResponse(400, "Payload Meta Malformed !"))
         }
@@ -65,6 +65,7 @@ const sendOtp = asyncHandler(async (req, res) => {
         // ----------------------Create Entry in lead Table if not find in user Table-------------------------
         const lead = await Lead.create({
             phone,
+            appName,
             ts,
             reqAction,
             location
@@ -110,7 +111,7 @@ const verifyOtp = asyncHandler(async (req, res) => {
     const { phone, otp, mobHash } = req.body.pay
 
     try {
-        if (pid !== "ALTA" || appName !== 'Altaneo' || reqAction !== 'verifyOtp' || !ts) {
+        if (pid !== "ALTA" || appName !== 'altaneoFin' || reqAction !== 'verifyOtp' || !ts) {
             return res.status(400).json(
                 new ApiResponse(400, "Payload Meta Malformed !"))
         }

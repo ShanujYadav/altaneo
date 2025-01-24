@@ -8,8 +8,6 @@ import { gstVerification } from "../utils/externalApi.js"
 const personalDetails = asyncHandler(async (req, res) => {
     const { pid, appName, ts, reqAction, clientIp, userId } = req.body.meta
     const { name, panNo, DOB, email, pinCode, phone } = req.body.pay
-
-    console.log("req----",req.body);
     
     try {
         if (!(pid === 'ALTA' && appName === "Altaneo" && reqAction === 'personalDetails' && userId)) {

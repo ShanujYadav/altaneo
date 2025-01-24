@@ -32,7 +32,7 @@ const gstVerification = async (gstNo) => {
         // return res.data
 
         const dummyData = {
-            "stateJurisdictionCode": "HR209",
+            "stateJurisdictionCode": "HR209",  
             "taxpayerType": "Regular",
             "stateJurisdiction": "Gurgaon (South) Ward 8",
             "legalNameOfBusiness": "ALTANEO FINANCE PRIVATE LIMITED",

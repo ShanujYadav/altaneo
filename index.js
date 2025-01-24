@@ -16,9 +16,6 @@ app.get('/api/sanu', (req, res) => {
 });
 
 
-console.log('hmacVal---', hmacVal())
-
-
 connectDB()
    .then(() => {
       app.listen(process.env.PORT || 5000, () => {
