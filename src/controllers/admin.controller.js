@@ -6,6 +6,8 @@ import { sendEmail } from "../utils/mail/nodeMailer.js"
 
 const allVendor = asyncHandler(async (req, res) => {
     const { appName, pid, ts, location, reqAction } = req.body.meta
+    console.log(req.body.meta);
+
     const { phone, password } = req.body.pay
 
     try {
@@ -110,11 +112,11 @@ const takenAction = asyncHandler(async (req, res) => {
 
         // Send mail to user 
         const mailResp = await sendEmail(name, businessName, email, uploadAt, status, docId)
-       
+
         if (!mailResp) {
             return res.status(200).json(new ApiResponse('000', `Application ${status} But due to some Issue mail has not been sent !`))
         }
-        
+
         return res.status(200).json(new ApiResponse('000', `Application ${status} `))
     } catch (error) {
         return res.status(500).json(new ApiResponse(500, error?.message))
